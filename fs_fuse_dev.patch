@@ -1,0 +1,16 @@
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -360,14 +360,14 @@ static int fuse_try_to_kill_request(struct fuse_conn *fc, struct fuse_req *req)
+ 		if (!(req->flags & FR_FINISHED)) {
+-			dprintk("Request finished: FR_FINISHED set (req=%p)\n", req);
++			pr_debug("Request finished: FR_FINISHED set (req=%p)\n", req);
+ 			spin_unlock(&fuse_lock);
+ 			return 1;
+ 		}
+-		if (test_bit(FR_INTR_QUEUED, &req->flags)) {
+-			dprintk("Interrupt already queued: FR_INTR_QUEUED was set (req=%p)\n", req);
++		if (test_bit(FR_INTERRUPTED, &req->flags)) {
++			pr_debug("Interrupt already queued: FR_INTERRUPTED was set (req=%p)\n", req);
+ 			spin_unlock(&fuse_lock);
+ 			return 1;
+ 		}
