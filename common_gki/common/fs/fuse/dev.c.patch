@@ -1,0 +1,21 @@
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -360,15 +360,15 @@ static int fuse_req_may_be_queued(struct fuse_conn *fc,
+ 	struct fuse_req *req)
+ {
+ 	if (test_bit(FR_FINISHED, &req->flags)) {
+-		dprintk("Request finished: FR_FINISHED set (req=%p)\n", req);
++		pr_debug("Request finished: FR_FINISHED set (req=%p)\n", req);
+ 		return 0;
+ 	}
+ 
+-	if (test_and_set_bit(FR_INTR_QUEUED, &req->flags)) {
++	if (test_and_set_bit(FR_INTERRUPTED, &req->flags)) {
+ 		if (!test_bit(FR_INTERRUPTED, &req->flags)) {
+ 			set_bit(FR_INTERRUPTED, &req->flags);
+ 		}
+-		dprintk("Interrupt already queued: FR_INTR_QUEUED was set (req=%p)\n", req);
++		pr_debug("Interrupt already queued: FR_INTERRUPTED was set (req=%p)\n", req);
+ 		return 0;
+ 	}
+ 
